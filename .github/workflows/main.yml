@@ -1,0 +1,41 @@
+name: Deploy Server
+
+on:
+  push:
+    branches:
+      - main
+env:
+  CI: false
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+          
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.17.1' # Corrected Node.js version format
+            
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set Environment Variables
+        env:
+          PORT: ${{ secrets.PORT }}  # Use a GitHub secret for the PORT value
+        run: echo "Environment variable PORT is set to $PORT"
+
+  deploy:
+    name: deploy
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ # Change to the directory with your static files
