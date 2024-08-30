@@ -1,14 +1,23 @@
-//rsrequire('dotenv').config()
-var express = require('express')
-var cors = require('cors')
-var app = express()
- 
+// Configuring env variables
+require('dotenv').config()
+
+// Importing npm packages
+const express = require('express')
+const cors = require('cors')
+
+// Variables
+const app = express()
+const PORT = process.env.PORT
+
+// Enabling cors policy
 app.use(cors())
- 
-app.get('/', function (req, res, next) {
-  res.json({msg: 'Hello World.'})
+
+// Defining our routes
+app.get('/', function (req, res) {
+  res.send('Hello world')
 })
- 
-app.listen(8000, function () {
-  console.log('CORS-enabled web server listening on port 8000')
+
+// Listening our server 
+app.listen(PORT, function () {
+  console.log(`Server running on http://localhost:${PORT}`)
 })
